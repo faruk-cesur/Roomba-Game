@@ -106,7 +106,7 @@ public class PlayerController : MonoBehaviour
 
             if (_currentWayPoint == _wayPoints.Count)
             {
-                if (UIManager.Instance.distanceSlider.value > 60)
+                if (UIManager.Instance.garbageSlider.value > 60)
                 {
                     GameManager.Instance.WinGame();
                 }
@@ -134,7 +134,7 @@ public class PlayerController : MonoBehaviour
         {
             Taptic.Light();
             UIManager.Instance.gold++;
-            UIManager.Instance.distanceSlider.value++;
+            UIManager.Instance.garbageSlider.value++;
             SoundManager.Instance.PlaySound(SoundManager.Instance.collectGarbageSound, 0.4f);
             other.gameObject.SetActive(false);
         }

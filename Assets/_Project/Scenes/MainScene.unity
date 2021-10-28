@@ -1926,7 +1926,7 @@ GameObject:
   - component: {fileID: 47435088}
   - component: {fileID: 47435089}
   m_Layer: 5
-  m_Name: DistanceSlider
+  m_Name: GarbageSlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45213,8 +45213,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 119f6746559944544992e75da65ee3b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 21819447}
-  distanceSlider: {fileID: 47435089}
+  garbageSlider: {fileID: 47435089}
   currentGoldText: {fileID: 374618116}
   earnedGoldText: {fileID: 1373438196}
   earnedExtraGoldText: {fileID: 924891428}
@@ -45222,6 +45221,7 @@ MonoBehaviour:
   prepareTotalGoldText: {fileID: 7434788}
   winTotalGoldText: {fileID: 1363333805}
   sliderLevelText: {fileID: 1627808958}
+  getGoldText: {fileID: 208149587}
   sliderLevel: 1
   gold: 0
   _prepareGameUI: {fileID: 2048739654}

@@ -12,9 +12,7 @@ public class UIManager : MonoBehaviour
     private static UIManager _instance;
     public static UIManager Instance => _instance;
 
-    public PlayerController player;
-
-    public Slider distanceSlider;
+    public Slider garbageSlider;
 
     public TextMeshProUGUI currentGoldText,
         earnedGoldText,
@@ -22,7 +20,8 @@ public class UIManager : MonoBehaviour
         getExtraGoldText,
         prepareTotalGoldText,
         winTotalGoldText,
-        sliderLevelText;
+        sliderLevelText,
+        getGoldText;
 
     [HideInInspector] public int sliderLevel = 1, gold;
 
@@ -39,6 +38,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private List<GameObject> _yellowStars;
 
     private float _anglerBonusArrowZ, _time = 1f;
+    private int _multiplyStarNumber = 1;
 
     private void Awake()
     {
@@ -73,6 +73,7 @@ public class UIManager : MonoBehaviour
             case GameState.LoseGame:
                 break;
             case GameState.WinGame:
+                CalculateStars();
                 UpdateGoldInfo();
                 break;
         }
@@ -84,6 +85,7 @@ public class UIManager : MonoBehaviour
         {
             yellowStar.SetActive(false);
         }
+
         _prepareGameUI.SetActive(true);
         _mainGameUI.SetActive(false);
         _loseGameUI.SetActive(false);
@@ -119,7 +121,7 @@ public class UIManager : MonoBehaviour
     {
         CalculateBonusArrowRotation();
         currentGoldText.text = gold.ToString();
-        earnedGoldText.text = currentGoldText.text;
+        earnedGoldText.text = (_multiplyStarNumber * gold).ToString();
         prepareTotalGoldText.text = PlayerPrefs.GetInt("TotalGold").ToString();
         winTotalGoldText.text = PlayerPrefs.GetInt("TotalGold").ToString();
     }
@@ -127,22 +129,27 @@ public class UIManager : MonoBehaviour
 
     public void CalculateStars()
     {
-        if (distanceSlider.value > 60)
+        if (garbageSlider.value > 60)
         {
             _yellowStars[0].SetActive(true);
+            getGoldText.text = "GET X1";
         }
 
-        if (distanceSlider.value > 133)
+        if (garbageSlider.value > 133)
         {
             _yellowStars[1].SetActive(true);
+            getGoldText.text = "GET X2";
+            _multiplyStarNumber = 2;
         }
 
-        if (distanceSlider.value > 205)
+        if (garbageSlider.value > 205)
         {
             _yellowStars[2].SetActive(true);
+            getGoldText.text = "GET X3";
+            _multiplyStarNumber = 3;
         }
     }
-    
+
     public IEnumerator DurationWinGameUI()
     {
         yield return new WaitForSeconds(2f);
@@ -181,22 +188,22 @@ public class UIManager : MonoBehaviour
 
         if (_anglerBonusArrowZ <= 360 && _anglerBonusArrowZ >= 306f)
         {
-            PlayerPrefs.SetInt("TotalGold", gold * 2 + PlayerPrefs.GetInt("TotalGold"));
+            PlayerPrefs.SetInt("TotalGold", gold * 2 * _multiplyStarNumber + PlayerPrefs.GetInt("TotalGold"));
         }
 
         if (_anglerBonusArrowZ < 306f && _anglerBonusArrowZ >= 250f)
         {
-            PlayerPrefs.SetInt("TotalGold", gold * 3 + PlayerPrefs.GetInt("TotalGold"));
+            PlayerPrefs.SetInt("TotalGold", gold * 3 * _multiplyStarNumber + PlayerPrefs.GetInt("TotalGold"));
         }
 
         if (_anglerBonusArrowZ < 250f && _anglerBonusArrowZ >= 202f)
         {
-            PlayerPrefs.SetInt("TotalGold", gold * 4 + PlayerPrefs.GetInt("TotalGold"));
+            PlayerPrefs.SetInt("TotalGold", gold * 4 * _multiplyStarNumber + PlayerPrefs.GetInt("TotalGold"));
         }
 
         if (_anglerBonusArrowZ < 202f && _anglerBonusArrowZ >= 180f)
         {
-            PlayerPrefs.SetInt("TotalGold", gold * 5 + PlayerPrefs.GetInt("TotalGold"));
+            PlayerPrefs.SetInt("TotalGold", gold * 5 * _multiplyStarNumber + PlayerPrefs.GetInt("TotalGold"));
         }
 
         _getButton.SetActive(false);
@@ -214,7 +221,7 @@ public class UIManager : MonoBehaviour
             _time += 0.05f;
         }
 
-        PlayerPrefs.SetInt("TotalGold", gold + PlayerPrefs.GetInt("TotalGold"));
+        PlayerPrefs.SetInt("TotalGold", (_multiplyStarNumber * gold) + PlayerPrefs.GetInt("TotalGold"));
         _getButton.SetActive(false);
         _getExtraButton.SetActive(false);
         _extraGoldPanel.SetActive(false);
@@ -227,25 +234,25 @@ public class UIManager : MonoBehaviour
         _anglerBonusArrowZ = anglerZ;
         if (anglerZ <= 360 && anglerZ >= 306f)
         {
-            earnedExtraGoldText.text = (gold * 2).ToString();
+            earnedExtraGoldText.text = (gold * 2 * _multiplyStarNumber).ToString();
             getExtraGoldText.text = "GET EXTRA X2";
         }
 
         if (anglerZ < 306f && anglerZ >= 250f)
         {
-            earnedExtraGoldText.text = (gold * 3).ToString();
+            earnedExtraGoldText.text = (gold * 3 * _multiplyStarNumber).ToString();
             getExtraGoldText.text = "GET EXTRA X3";
         }
 
         if (anglerZ < 250f && anglerZ >= 202f)
         {
-            earnedExtraGoldText.text = (gold * 4).ToString();
+            earnedExtraGoldText.text = (gold * 4 * _multiplyStarNumber).ToString();
             getExtraGoldText.text = "GET EXTRA X4";
         }
 
         if (anglerZ < 202f && anglerZ >= 180f)
         {
-            earnedExtraGoldText.text = (gold * 5).ToString();
+            earnedExtraGoldText.text = (gold * 5 * _multiplyStarNumber).ToString();
             getExtraGoldText.text = "GET EXTRA X5";
         }
     }
