@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody),typeof(LineRenderer))]
+[RequireComponent(typeof(Rigidbody), typeof(LineRenderer))]
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private List<GameObject> _wayPoints;
@@ -15,17 +15,19 @@ public class PlayerController : MonoBehaviour
     private Camera _cam;
     private float _timer = 0;
     private int _wayIndex;
-    private int _currentWayPoint;
+    private int _currentWayPoint = 0;
     private bool _isRobotMove;
     private bool _isMouseClickedOnRobot;
-    
-    
-    
-    private void Start()
+
+    private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
         _lineRenderer = GetComponent<LineRenderer>();
         _cam = Camera.main;
+    }
+
+    private void Start()
+    {
         _lineRenderer.enabled = false;
         _isRobotMove = false;
         _isMouseClickedOnRobot = false;
@@ -55,27 +57,28 @@ public class PlayerController : MonoBehaviour
         _isMouseClickedOnRobot = true;
         _lineRenderer.enabled = true;
         _lineRenderer.positionCount = 1;
-        _lineRenderer.SetPosition(0,transform.position);
+        _lineRenderer.SetPosition(0, transform.position);
     }
 
     public void Movement()
     {
-        _timer = Time.deltaTime;
-        
+        _timer += Time.deltaTime;
+
         if (Input.GetMouseButton(0) && _isMouseClickedOnRobot && _timer > _timeForNextRay)
         {
-            Vector3 mousePos = _cam.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 mousePos = _cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 100f));
             Vector3 direction = mousePos - _cam.transform.position;
 
             RaycastHit hit;
 
-            if (Physics.Raycast(_cam.transform.position,direction,out hit,100f))
+            if (Physics.Raycast(_cam.transform.position, direction, out hit, 100f))
             {
-                Debug.DrawLine(_cam.transform.position,direction,Color.red,1f);
+                Debug.DrawLine(_cam.transform.position, direction, Color.red, 1f);
                 GameObject newWayPoint = new GameObject("WayPoint");
+                newWayPoint.transform.position = new Vector3(hit.point.x, transform.position.y, hit.point.z);
                 _wayPoints.Add(newWayPoint);
                 _lineRenderer.positionCount = _wayIndex + 1;
-                _lineRenderer.SetPosition(_wayIndex,newWayPoint.transform.position);
+                _lineRenderer.SetPosition(_wayIndex, newWayPoint.transform.position);
                 _timer = 0;
                 _wayIndex++;
             }
@@ -91,7 +94,7 @@ public class PlayerController : MonoBehaviour
         {
             transform.LookAt(_wayPoints[_currentWayPoint].transform);
             _rigidbody.MovePosition(_wayPoints[_currentWayPoint].transform.position);
-            
+
             if (transform.position == _wayPoints[_currentWayPoint].transform.position)
             {
                 _currentWayPoint++;
@@ -100,13 +103,18 @@ public class PlayerController : MonoBehaviour
             if (_currentWayPoint == _wayPoints.Count)
             {
                 _isRobotMove = false;
-                _wayPoints.Clear();
-                _wayIndex = 1;
-                _currentWayPoint = 0;
+
+                foreach (var wayPoint in _wayPoints)
+                {
+                    Destroy(wayPoint);
+                    _wayPoints.Clear();
+                    _wayIndex = 1;
+                    _currentWayPoint = 0;
+                }
             }
         }
     }
-    
+
 
     private void OnTriggerEnter(Collider other)
     {
