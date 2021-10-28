@@ -80,7 +80,7 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.SetInt("TotalGold", UIManager.Instance.gold + PlayerPrefs.GetInt("TotalGold"));
         UIManager.Instance.UpdateGoldInfo();
         CurrentGameState = GameState.WinGame;
-        SoundManager.Instance.PlaySound(SoundManager.Instance.winGameSound, 1);
+        //SoundManager.Instance.PlaySound(SoundManager.Instance.winGameSound, 1);
         StartCoroutine(UIManager.Instance.DurationWinGameUI());
     }
 }

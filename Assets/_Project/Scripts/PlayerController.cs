@@ -65,7 +65,7 @@ public class PlayerController : MonoBehaviour
     {
         _timer += Time.deltaTime;
 
-        if (Input.GetMouseButton(0) && _isMouseClickedOnRobot && _timer > _timeForNextRay)
+        if (Input.GetMouseButton(0) && _isMouseClickedOnRobot && _timer > _timeForNextRay && !_isRobotMove)
         {
             Vector3 mousePos = _cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 100f));
             Vector3 direction = mousePos - _cam.transform.position;
@@ -103,8 +103,14 @@ public class PlayerController : MonoBehaviour
 
             if (_currentWayPoint == _wayPoints.Count)
             {
-                _isRobotMove = false;
-                GameManager.Instance.CurrentGameState = GameState.WinGame;
+                if (UIManager.Instance.distanceSlider.value > 60)
+                {
+                    GameManager.Instance.WinGame();
+                }
+                else
+                {
+                    GameManager.Instance.LoseGame();
+                }
 
                 foreach (var wayPoint in _wayPoints)
                 {

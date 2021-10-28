@@ -202,7 +202,7 @@ public class UIManager : MonoBehaviour
         _getButton.SetActive(false);
         _getExtraButton.SetActive(false);
         _extraGoldPanel.SetActive(false);
-        NextLevelButton();
+        GameManager.Instance.NextLevel();
     }
 
     public void GetButton()
@@ -218,7 +218,7 @@ public class UIManager : MonoBehaviour
         _getButton.SetActive(false);
         _getExtraButton.SetActive(false);
         _extraGoldPanel.SetActive(false);
-        NextLevelButton();
+        GameManager.Instance.NextLevel();
     }
 
     private void CalculateBonusArrowRotation()
