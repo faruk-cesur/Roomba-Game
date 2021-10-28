@@ -12,7 +12,7 @@ public class SoundManager : MonoBehaviour
     public AudioSource audioSource;
 
 
-    private void Awake()
+    private void Awake() // Using Singleton Design Pattern
     {
         if (_instance != null && _instance != this)
         {
@@ -27,7 +27,7 @@ public class SoundManager : MonoBehaviour
     }
 
 
-    public void PlaySound(AudioClip clip, float volume)
+    public void PlaySound(AudioClip clip, float volume) // Dynamic Method For Everywhere Use.
     {
         audioSource.PlayOneShot(clip, volume);
     }

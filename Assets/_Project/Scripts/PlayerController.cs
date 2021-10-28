@@ -8,6 +8,8 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Rigidbody), typeof(LineRenderer))]
 public class PlayerController : MonoBehaviour
 {
+    #region Fields
+
     public GameObject robotExplosionParticle;
     public float robotSweepPower;
 
@@ -24,13 +26,15 @@ public class PlayerController : MonoBehaviour
     private bool _isRobotMove;
     private bool _isMouseClickedOnRobot;
 
+    #endregion
+
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
         _lineRenderer = GetComponent<LineRenderer>();
         _cam = Camera.main;
         _lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
-        _lineRenderer.SetColors(new Color(1, 1, 1, 0.5f), new Color(1, 1, 1, 0.5f));
+        _lineRenderer.SetColors(new Color(1, 1, 1, 0.5f), new Color(1, 1, 1, 0.5f)); // Changing Line Renderer Color To Transparent White From Pink
     }
 
     private void Start()
@@ -46,7 +50,6 @@ public class PlayerController : MonoBehaviour
         switch (GameManager.Instance.CurrentGameState)
         {
             case GameState.PrepareGame:
-                Movement();
                 break;
             case GameState.MainGame:
                 Movement();
@@ -60,7 +63,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void OnMouseDown()
+    #region Methods
+
+    public void OnMouseDown() // Line Renderer is enabled when click on player (robot)
     {
         _isMouseClickedOnRobot = true;
         _lineRenderer.enabled = true;
@@ -71,29 +76,28 @@ public class PlayerController : MonoBehaviour
 
     public void Movement()
     {
-        _timer += Time.deltaTime;
+        _timer += Time.deltaTime; // Keeping Real Time To Use Later
 
-        if (Input.GetMouseButton(0) && _isMouseClickedOnRobot && _timer > _timeForNextRay && !_isRobotMove)
+        if (Input.GetMouseButton(0) && _isMouseClickedOnRobot && _timer > _timeForNextRay && !_isRobotMove) // Holding LMB
         {
             Vector3 mousePos = _cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 100f));
-            Vector3 direction = mousePos - _cam.transform.position;
+            Vector3 direction = mousePos - _cam.transform.position; // Keeping Mouse Position from Camera's ScreenToWorldPoint Then Find The Direction Between Them.
 
             RaycastHit hit;
 
-
             if (Physics.Raycast(_cam.transform.position, direction, out hit, 100f))
             {
-                GameObject newWayPoint = new GameObject("WayPoint");
-                newWayPoint.transform.position = new Vector3(hit.point.x, transform.position.y, hit.point.z);
-                _wayPoints.Add(newWayPoint);
+                GameObject newWayPoint = new GameObject("WayPoint"); // Creating a new empty Game Object for every timeForNextRay
+                newWayPoint.transform.position = new Vector3(hit.point.x, transform.position.y, hit.point.z); // Change their positions to where raycast hits
+                _wayPoints.Add(newWayPoint); // Addings new empty game objects to waypoint list
                 _lineRenderer.positionCount = _wayIndex + 1;
-                _lineRenderer.SetPosition(_wayIndex, newWayPoint.transform.position);
+                _lineRenderer.SetPosition(_wayIndex, newWayPoint.transform.position); // Setting every line renderer position to new created way points
                 _timer = 0;
                 _wayIndex++;
             }
         }
 
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0)) // Releasing LMB
         {
             _isRobotMove = true;
             _isMouseClickedOnRobot = false;
@@ -101,23 +105,22 @@ public class PlayerController : MonoBehaviour
 
         if (_isRobotMove)
         {
-            transform.LookAt(_wayPoints[_currentWayPoint].transform);
+            transform.LookAt(_wayPoints[_currentWayPoint].transform); // Robot looking at the waypoints while moving
             Vector3 dir = _wayPoints[_currentWayPoint].transform.position - transform.position;
-            _rigidbody.MovePosition(transform.position + dir.normalized * _robotMoveSpeed * Time.deltaTime);
+            _rigidbody.MovePosition(transform.position + dir.normalized * _robotMoveSpeed * Time.deltaTime); //Robot Moves The Position of WayPoints One by one
 
             if (dir.magnitude < .75f)
             {
-                _currentWayPoint++;
+                _currentWayPoint++; // Goes to the next waypoint
             }
 
-            if (_currentWayPoint == _wayPoints.Count)
+            if (_currentWayPoint == _wayPoints.Count) // If all waypoints completed
             {
-                if (UIManager.Instance.garbageSlider.value > 60)
+                if (UIManager.Instance.garbageSlider.value > 60) // If player got at least one star, wins the game
                 {
                     GameManager.Instance.WinGame();
-                    SoundManager.Instance.PlaySound(SoundManager.Instance.winGameSound, 0.4f);
                 }
-                else
+                else // If player doesn't have any star, loses the game
                 {
                     GameManager.Instance.LoseGame();
                     UIManager.Instance.collectMoreGarbageText.enabled = true;
@@ -125,4 +128,6 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
+    #endregion
 }

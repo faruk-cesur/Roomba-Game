@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public enum GameState
+public enum GameState // Created Game States For Flexibility
 {
     PrepareGame,
     MainGame,
@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
 
     private GameState _currentGameState;
 
-    public GameState CurrentGameState
+    public GameState CurrentGameState // Switching Between Game State Enums For Functionality
     {
         get { return _currentGameState; }
         set
@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void Awake()
+    private void Awake() // Using Singleton Design Pattern & Updating Game State To PrepareGame On Start
     {
         if (_instance != null && _instance != this)
         {
@@ -80,7 +80,7 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.SetInt("TotalGold", UIManager.Instance.gold + PlayerPrefs.GetInt("TotalGold"));
         UIManager.Instance.UpdateGoldInfo();
         CurrentGameState = GameState.WinGame;
-        //SoundManager.Instance.PlaySound(SoundManager.Instance.winGameSound, 1);
+        SoundManager.Instance.PlaySound(SoundManager.Instance.winGameSound, 1);
         StartCoroutine(UIManager.Instance.DurationWinGameUI());
     }
 }

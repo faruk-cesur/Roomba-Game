@@ -14,7 +14,7 @@ public class LevelManager : MonoBehaviour
 
     [HideInInspector] public int currentLevel;
 
-    private void Awake()
+    private void Awake() // Using Singleton Design Pattern
     {
         if (_instance != null && _instance != this)
         {
@@ -32,7 +32,7 @@ public class LevelManager : MonoBehaviour
         CallLevel();
     }
 
-    public void SetLevelPlayerPrefs()
+    public void SetLevelPlayerPrefs() // If it is first start, create playerprefs and keep the current level
     {
         if (!PlayerPrefs.HasKey("CurrentLevel"))
         {
@@ -45,7 +45,7 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    public void CallLevel()
+    public void CallLevel() // Calling The Current Level From PlayerPrefs
     {
         if (currentLevel > levels.Count)
         {

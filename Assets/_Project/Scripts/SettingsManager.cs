@@ -14,7 +14,7 @@ public class SettingsManager : MonoBehaviour
 
     public GameObject settingsPanel;
 
-    private void Awake()
+    private void Awake() // Using Singleton Design Pattern
     {
         if (_instance != null && _instance != this)
         {
@@ -53,7 +53,7 @@ public class SettingsManager : MonoBehaviour
         sliderAudio.value = 1f;
     }
 
-    private void FirstStart()
+    private void FirstStart() // If it is first start, sets the settings to default
     {
         if (!PlayerPrefs.HasKey("Vibration"))
         {
@@ -68,7 +68,7 @@ public class SettingsManager : MonoBehaviour
         PlayerPrefs.SetFloat("Audio", sliderAudio.value);
     }
 
-    public void Vibration()
+    public void Vibration() // Setting Vibration ON or OFF
     {
         if (sliderVibration.value == 0)
         {
@@ -82,7 +82,7 @@ public class SettingsManager : MonoBehaviour
 
     public void Audio()
     {
-        if (sliderAudio.value == 0)
+        if (sliderAudio.value == 0) // Setting Audio ON or OFF
         {
             SoundManager.Instance.audioSource.mute = true;
         }

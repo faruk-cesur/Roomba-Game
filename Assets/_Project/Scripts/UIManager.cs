@@ -9,11 +9,13 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    #region Fields
+
     private static UIManager _instance;
     public static UIManager Instance => _instance;
 
     public PlayerController playerController;
-    
+
     public Slider garbageSlider;
 
     public TextMeshProUGUI currentGoldText,
@@ -23,8 +25,8 @@ public class UIManager : MonoBehaviour
         prepareTotalGoldText,
         winTotalGoldText,
         sliderLevelText,
-        getGoldText, 
-        collectMoreGarbageText, 
+        getGoldText,
+        collectMoreGarbageText,
         dontTouchHousewaresText;
 
     [HideInInspector] public int sliderLevel = 1, gold;
@@ -38,13 +40,14 @@ public class UIManager : MonoBehaviour
         _getExtraButton,
         _extraGoldPanel;
 
-    [SerializeField] private List<GameObject> _goldenCoins;
-    [SerializeField] private List<GameObject> _yellowStars;
+    [SerializeField] private List<GameObject> _goldenCoins, _yellowStars;
 
     private float _anglerBonusArrowZ, _time = 1f;
     private int _multiplyStarNumber = 1;
 
-    private void Awake()
+    #endregion
+
+    private void Awake() // Using Singleton Design Pattern
     {
         if (_instance != null && _instance != this)
         {
@@ -82,6 +85,8 @@ public class UIManager : MonoBehaviour
                 break;
         }
     }
+
+    #region Methods
 
     public void PrepareGameUI()
     {
@@ -135,7 +140,7 @@ public class UIManager : MonoBehaviour
     }
 
 
-    public void CalculateStars()
+    public void CalculateStars() // Calculating The Reward On Win According To Stars Player Have
     {
         if (garbageSlider.value > 60)
         {
@@ -185,9 +190,9 @@ public class UIManager : MonoBehaviour
     }
 
 
-    public void GetExtraButton()
+    public void GetExtraButton() // Getting Extra Gold Reward For Watching Ads
     {
-        foreach (var goldenCoin in _goldenCoins)
+        foreach (var goldenCoin in _goldenCoins) // Golden Coins Moving Up
         {
             goldenCoin.SetActive(true);
             goldenCoin.transform.DOLocalMove(new Vector3(38.7f, -50f, 0), _time);
@@ -220,7 +225,7 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.NextLevel();
     }
 
-    public void GetButton()
+    public void GetButton() // Getting Gold Reward
     {
         foreach (var goldenCoin in _goldenCoins)
         {
@@ -236,7 +241,7 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.NextLevel();
     }
 
-    private void CalculateBonusArrowRotation()
+    private void CalculateBonusArrowRotation() // Calculating Rotation Of Extra Gold Reward Arrow
     {
         var anglerZ = _extraGoldArrow.transform.localEulerAngles.z;
         _anglerBonusArrowZ = anglerZ;
@@ -270,7 +275,7 @@ public class UIManager : MonoBehaviour
         gold = 0;
     }
 
-    private void SetPlayerPrefs()
+    private void SetPlayerPrefs() // Setting PlayerPrefs On Start
     {
         if (!PlayerPrefs.HasKey("TotalGold"))
         {
@@ -284,4 +289,6 @@ public class UIManager : MonoBehaviour
 
         sliderLevelText.text = PlayerPrefs.GetInt("SliderLevel").ToString();
     }
+
+    #endregion
 }

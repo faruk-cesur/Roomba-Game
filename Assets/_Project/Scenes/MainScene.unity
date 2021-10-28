@@ -962,7 +962,7 @@ MonoBehaviour:
   robotSweepPower: 1
   _wayPoints: []
   _timeForNextRay: 0.01
-  _robotMoveSpeed: 5
+  _robotMoveSpeed: 10
 --- !u!120 &21819448
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -78617,7 +78617,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1920982263
 RectTransform:
   m_ObjectHideFlags: 0

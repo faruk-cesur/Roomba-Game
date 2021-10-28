@@ -7,7 +7,7 @@ public class Vacuum : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        Garbage garbage = other.GetComponentInParent<Garbage>();
+        Garbage garbage = other.GetComponentInParent<Garbage>(); // Robot collides with garbages
         if (garbage)
         {
             UIManager.Instance.gold++;
