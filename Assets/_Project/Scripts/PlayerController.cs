@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
         _lineRenderer = GetComponent<LineRenderer>();
         _cam = Camera.main;
         _lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
-        _lineRenderer.SetColors(new Color(1,1,1,0.5f), new Color(1,1,1,0.5f));
+        _lineRenderer.SetColors(new Color(1, 1, 1, 0.5f), new Color(1, 1, 1, 0.5f));
     }
 
     private void Start()
@@ -78,6 +78,7 @@ public class PlayerController : MonoBehaviour
 
             RaycastHit hit;
 
+
             if (Physics.Raycast(_cam.transform.position, direction, out hit, 100f))
             {
                 GameObject newWayPoint = new GameObject("WayPoint");
@@ -117,14 +118,6 @@ public class PlayerController : MonoBehaviour
                     GameManager.Instance.LoseGame();
                     UIManager.Instance.collectMoreGarbageText.enabled = true;
                 }
-
-                foreach (var wayPoint in _wayPoints)
-                {
-                    Destroy(wayPoint);
-                    _wayPoints.Clear();
-                    _wayIndex = 1;
-                    _currentWayPoint = 0;
-                }
             }
         }
     }
@@ -141,9 +134,9 @@ public class PlayerController : MonoBehaviour
             SoundManager.Instance.PlaySound(SoundManager.Instance.collectGarbageSound, 0.4f);
             other.gameObject.GetComponent<Collider>().enabled = false;
             other.gameObject.transform.SetParent(transform);
-            other.gameObject.transform.DOLocalMove(new Vector3(0,0,0),_robotSweepPower);
+            other.gameObject.transform.DOLocalMove(new Vector3(0, 0, 0), _robotSweepPower);
         }
-        
+
         Obstacle obstacle = other.GetComponentInParent<Obstacle>();
         if (obstacle)
         {

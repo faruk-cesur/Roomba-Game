@@ -12,6 +12,8 @@ public class UIManager : MonoBehaviour
     private static UIManager _instance;
     public static UIManager Instance => _instance;
 
+    public PlayerController playerController;
+    
     public Slider garbageSlider;
 
     public TextMeshProUGUI currentGoldText,
@@ -106,6 +108,7 @@ public class UIManager : MonoBehaviour
 
     public void LoseGameUI()
     {
+        playerController.gameObject.SetActive(false);
         _prepareGameUI.SetActive(false);
         _mainGameUI.SetActive(false);
         _loseGameUI.SetActive(true);
@@ -114,6 +117,7 @@ public class UIManager : MonoBehaviour
 
     public void WinGameUI()
     {
+        playerController.gameObject.SetActive(false);
         _prepareGameUI.SetActive(false);
         _mainGameUI.SetActive(false);
         _loseGameUI.SetActive(false);

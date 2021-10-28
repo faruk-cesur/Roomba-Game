@@ -45216,6 +45216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 119f6746559944544992e75da65ee3b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerController: {fileID: 21819447}
   garbageSlider: {fileID: 47435089}
   currentGoldText: {fileID: 374618116}
   earnedGoldText: {fileID: 1373438196}
