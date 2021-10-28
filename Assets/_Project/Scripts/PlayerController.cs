@@ -7,6 +7,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private List<GameObject> _wayPoints;
+    [SerializeField] private GameObject _robotDeathParticle;
     [SerializeField] private float _timeForNextRay;
     [SerializeField] private float _robotSpeed;
 
@@ -129,11 +130,22 @@ public class PlayerController : MonoBehaviour
         Garbage garbage = other.GetComponentInParent<Garbage>();
         if (garbage)
         {
+            Taptic.Light();
             UIManager.Instance.gold++;
             UIManager.Instance.distanceSlider.value++;
             //Instantiate(particleCollectable, playerModel.transform.position + new Vector3(0, 2, 0), Quaternion.identity);
             SoundManager.Instance.PlaySound(SoundManager.Instance.collectGarbageSound, 0.4f);
             Destroy(other.gameObject);
+        }
+        
+        Obstacle obstacle = other.GetComponentInParent<Obstacle>();
+        if (obstacle)
+        {
+            Taptic.Heavy();
+            _robotDeathParticle.SetActive(true);
+            GameManager.Instance.LoseGame();
+            //Instantiate(particleCollectable, playerModel.transform.position + new Vector3(0, 2, 0), Quaternion.identity);
+            SoundManager.Instance.PlaySound(SoundManager.Instance.loseGameSound, 0.4f);
         }
     }
 }
