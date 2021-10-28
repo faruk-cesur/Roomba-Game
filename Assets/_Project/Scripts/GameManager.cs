@@ -57,7 +57,6 @@ public class GameManager : MonoBehaviour
     {
         CurrentGameState = GameState.MainGame;
         UIManager.Instance.MainGameUI();
-        print("started game");
     }
 
     public void RestartGame()
@@ -73,6 +72,7 @@ public class GameManager : MonoBehaviour
     public void LoseGame()
     {
         StartCoroutine(UIManager.Instance.DurationLoseGameUI());
+        CurrentGameState = GameState.LoseGame;
     }
 
     public void WinGame()
