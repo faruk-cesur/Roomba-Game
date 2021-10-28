@@ -7,12 +7,12 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody), typeof(LineRenderer))]
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private List<GameObject> _wayPoints;
     [SerializeField] private GameObject _robotExplosionParticle;
     [SerializeField] private float _timeForNextRay;
     [SerializeField] private float _robotMoveSpeed;
     [SerializeField] private float _robotSweepPower;
 
-    private List<GameObject> _wayPoints;
     private Rigidbody _rigidbody;
     private LineRenderer _lineRenderer;
     private Camera _cam;
@@ -80,7 +80,6 @@ public class PlayerController : MonoBehaviour
 
             if (Physics.Raycast(_cam.transform.position, direction, out hit, 100f))
             {
-                print(direction);
                 GameObject newWayPoint = new GameObject("WayPoint");
                 newWayPoint.transform.position = new Vector3(hit.point.x, transform.position.y, hit.point.z);
                 _wayPoints.Add(newWayPoint);
