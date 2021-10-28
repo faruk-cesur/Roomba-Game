@@ -60,6 +60,7 @@ public class PlayerController : MonoBehaviour
         _lineRenderer.enabled = true;
         _lineRenderer.positionCount = 1;
         _lineRenderer.SetPosition(0, transform.position);
+        GameManager.Instance.StartGame();
     }
 
     public void Movement()
@@ -133,7 +134,6 @@ public class PlayerController : MonoBehaviour
             Taptic.Light();
             UIManager.Instance.gold++;
             UIManager.Instance.distanceSlider.value++;
-            //Instantiate(particleCollectable, playerModel.transform.position + new Vector3(0, 2, 0), Quaternion.identity);
             SoundManager.Instance.PlaySound(SoundManager.Instance.collectGarbageSound, 0.4f);
             other.gameObject.SetActive(false);
         }
@@ -144,7 +144,6 @@ public class PlayerController : MonoBehaviour
             Taptic.Heavy();
             _robotDeathParticle.SetActive(true);
             GameManager.Instance.LoseGame();
-            //Instantiate(particleCollectable, playerModel.transform.position + new Vector3(0, 2, 0), Quaternion.identity);
             SoundManager.Instance.PlaySound(SoundManager.Instance.loseGameSound, 0.4f);
         }
     }
