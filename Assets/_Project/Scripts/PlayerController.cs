@@ -25,6 +25,8 @@ public class PlayerController : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody>();
         _lineRenderer = GetComponent<LineRenderer>();
         _cam = Camera.main;
+        _lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
+        _lineRenderer.SetColors(Color.white, Color.white);
     }
 
     private void Start()
@@ -76,7 +78,6 @@ public class PlayerController : MonoBehaviour
 
             if (Physics.Raycast(_cam.transform.position, direction, out hit, 100f))
             {
-                Debug.DrawLine(_cam.transform.position, direction, Color.white, 1f);
                 GameObject newWayPoint = new GameObject("WayPoint");
                 newWayPoint.transform.position = new Vector3(hit.point.x, transform.position.y, hit.point.z);
                 _wayPoints.Add(newWayPoint);
