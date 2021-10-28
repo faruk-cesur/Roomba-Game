@@ -27826,9 +27826,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff10b8b99d5f47d89196bae6170b149f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collectGarbageSound: {fileID: 0}
-  loseGameSound: {fileID: 0}
-  winGameSound: {fileID: 0}
+  explosionSound: {fileID: 8300000, guid: 0683bdc3d2bffe84982cbdc4e044be48, type: 3}
+  loseGameSound: {fileID: 8300000, guid: 2f11e8f69662cad4d99520d619198bd9, type: 3}
+  winGameSound: {fileID: 8300000, guid: 1c64f3f2b2d5b8749a54c3905fede26c, type: 3}
   audioSource: {fileID: 837499092}
 --- !u!4 &837499094
 Transform:

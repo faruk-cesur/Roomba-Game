@@ -112,6 +112,7 @@ public class PlayerController : MonoBehaviour
                 if (UIManager.Instance.garbageSlider.value > 60)
                 {
                     GameManager.Instance.WinGame();
+                    SoundManager.Instance.PlaySound(SoundManager.Instance.winGameSound, 0.4f);
                 }
                 else
                 {
@@ -131,7 +132,6 @@ public class PlayerController : MonoBehaviour
             Taptic.Light();
             UIManager.Instance.gold++;
             UIManager.Instance.garbageSlider.value++;
-            SoundManager.Instance.PlaySound(SoundManager.Instance.collectGarbageSound, 0.4f);
             other.gameObject.GetComponent<Collider>().enabled = false;
             other.gameObject.transform.SetParent(transform);
             other.gameObject.transform.DOLocalMove(new Vector3(0, 0, 0), _robotSweepPower);
@@ -143,7 +143,8 @@ public class PlayerController : MonoBehaviour
             Taptic.Heavy();
             _robotExplosionParticle.SetActive(true);
             GameManager.Instance.LoseGame();
-            SoundManager.Instance.PlaySound(SoundManager.Instance.loseGameSound, 0.4f);
+            SoundManager.Instance.PlaySound(SoundManager.Instance.explosionSound, 0.4f);
+            StartCoroutine(SoundManager.Instance.LoseGameSound());
             UIManager.Instance.dontTouchHousewaresText.enabled = true;
         }
     }

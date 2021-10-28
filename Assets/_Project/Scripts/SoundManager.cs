@@ -7,7 +7,7 @@ public class SoundManager : MonoBehaviour
     private static SoundManager _instance;
     public static SoundManager Instance => _instance;
 
-    public AudioClip collectGarbageSound, loseGameSound, winGameSound;
+    public AudioClip explosionSound, loseGameSound, winGameSound;
 
     public AudioSource audioSource;
 
@@ -34,7 +34,7 @@ public class SoundManager : MonoBehaviour
 
     public IEnumerator LoseGameSound()
     {
-        PlaySound(Instance.loseGameSound, 1);
         yield return new WaitForSeconds(2f);
+        PlaySound(Instance.loseGameSound, 1);
     }
 }
