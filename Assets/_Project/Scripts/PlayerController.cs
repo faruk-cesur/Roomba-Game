@@ -113,6 +113,7 @@ public class PlayerController : MonoBehaviour
                 else
                 {
                     GameManager.Instance.LoseGame();
+                    UIManager.Instance.collectMoreGarbageText.enabled = true;
                 }
 
                 foreach (var wayPoint in _wayPoints)
@@ -146,6 +147,7 @@ public class PlayerController : MonoBehaviour
             _robotDeathParticle.SetActive(true);
             GameManager.Instance.LoseGame();
             SoundManager.Instance.PlaySound(SoundManager.Instance.loseGameSound, 0.4f);
+            UIManager.Instance.dontTouchHousewaresText.enabled = true;
         }
     }
 }

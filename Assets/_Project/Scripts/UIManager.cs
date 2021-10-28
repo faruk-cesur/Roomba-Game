@@ -21,7 +21,9 @@ public class UIManager : MonoBehaviour
         prepareTotalGoldText,
         winTotalGoldText,
         sliderLevelText,
-        getGoldText;
+        getGoldText, 
+        collectMoreGarbageText, 
+        dontTouchHousewaresText;
 
     [HideInInspector] public int sliderLevel = 1, gold;
 
@@ -86,6 +88,8 @@ public class UIManager : MonoBehaviour
             yellowStar.SetActive(false);
         }
 
+        dontTouchHousewaresText.enabled = false;
+        collectMoreGarbageText.enabled = false;
         _prepareGameUI.SetActive(true);
         _mainGameUI.SetActive(false);
         _loseGameUI.SetActive(false);
