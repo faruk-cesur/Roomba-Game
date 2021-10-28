@@ -3,15 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Rigidbody), typeof(LineRenderer))]
 public class PlayerController : MonoBehaviour
 {
+    public GameObject robotExplosionParticle;
+    public float robotSweepPower;
+
     [SerializeField] private List<GameObject> _wayPoints;
-    [SerializeField] private GameObject _robotExplosionParticle;
     [SerializeField] private float _timeForNextRay;
     [SerializeField] private float _robotMoveSpeed;
-    [SerializeField] private float _robotSweepPower;
 
     private Rigidbody _rigidbody;
     private LineRenderer _lineRenderer;
@@ -100,9 +102,10 @@ public class PlayerController : MonoBehaviour
         if (_isRobotMove)
         {
             transform.LookAt(_wayPoints[_currentWayPoint].transform);
-            _rigidbody.MovePosition(_wayPoints[_currentWayPoint].transform.position * _robotMoveSpeed);
+            Vector3 dir = _wayPoints[_currentWayPoint].transform.position - transform.position;
+            _rigidbody.MovePosition(transform.position + dir.normalized * _robotMoveSpeed * Time.deltaTime);
 
-            if (transform.position == _wayPoints[_currentWayPoint].transform.position)
+            if (dir.magnitude < .75f)
             {
                 _currentWayPoint++;
             }
@@ -120,32 +123,6 @@ public class PlayerController : MonoBehaviour
                     UIManager.Instance.collectMoreGarbageText.enabled = true;
                 }
             }
-        }
-    }
-
-
-    private void OnTriggerEnter(Collider other)
-    {
-        Garbage garbage = other.GetComponentInParent<Garbage>();
-        if (garbage)
-        {
-            Taptic.Light();
-            UIManager.Instance.gold++;
-            UIManager.Instance.garbageSlider.value++;
-            other.gameObject.GetComponent<Collider>().enabled = false;
-            other.gameObject.transform.SetParent(transform);
-            other.gameObject.transform.DOLocalMove(new Vector3(0, 0, 0), _robotSweepPower);
-        }
-
-        Obstacle obstacle = other.GetComponentInParent<Obstacle>();
-        if (obstacle)
-        {
-            Taptic.Heavy();
-            _robotExplosionParticle.SetActive(true);
-            GameManager.Instance.LoseGame();
-            SoundManager.Instance.PlaySound(SoundManager.Instance.explosionSound, 0.4f);
-            StartCoroutine(SoundManager.Instance.LoseGameSound());
-            UIManager.Instance.dontTouchHousewaresText.enabled = true;
         }
     }
 }
