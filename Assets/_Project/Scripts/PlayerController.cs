@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody), typeof(LineRenderer))]
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private List<GameObject> _wayPoints;
-    [SerializeField] private GameObject _robotDeathParticle;
+    [SerializeField] private GameObject _robotExplosionParticle;
     [SerializeField] private float _timeForNextRay;
-    [SerializeField] private float _robotSpeed;
+    [SerializeField] private float _robotMoveSpeed;
+    [SerializeField] private float _robotSweepPower;
 
+    private List<GameObject> _wayPoints;
     private Rigidbody _rigidbody;
     private LineRenderer _lineRenderer;
     private Camera _cam;
@@ -26,7 +28,7 @@ public class PlayerController : MonoBehaviour
         _lineRenderer = GetComponent<LineRenderer>();
         _cam = Camera.main;
         _lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
-        _lineRenderer.SetColors(Color.white, Color.white);
+        _lineRenderer.SetColors(new Color(1,1,1,0.5f), new Color(1,1,1,0.5f));
     }
 
     private void Start()
@@ -78,6 +80,7 @@ public class PlayerController : MonoBehaviour
 
             if (Physics.Raycast(_cam.transform.position, direction, out hit, 100f))
             {
+                print(direction);
                 GameObject newWayPoint = new GameObject("WayPoint");
                 newWayPoint.transform.position = new Vector3(hit.point.x, transform.position.y, hit.point.z);
                 _wayPoints.Add(newWayPoint);
@@ -97,7 +100,7 @@ public class PlayerController : MonoBehaviour
         if (_isRobotMove)
         {
             transform.LookAt(_wayPoints[_currentWayPoint].transform);
-            _rigidbody.MovePosition(_wayPoints[_currentWayPoint].transform.position);
+            _rigidbody.MovePosition(_wayPoints[_currentWayPoint].transform.position * _robotMoveSpeed);
 
             if (transform.position == _wayPoints[_currentWayPoint].transform.position)
             {
@@ -137,14 +140,16 @@ public class PlayerController : MonoBehaviour
             UIManager.Instance.gold++;
             UIManager.Instance.garbageSlider.value++;
             SoundManager.Instance.PlaySound(SoundManager.Instance.collectGarbageSound, 0.4f);
-            other.gameObject.SetActive(false);
+            other.gameObject.GetComponent<Collider>().enabled = false;
+            other.gameObject.transform.SetParent(transform);
+            other.gameObject.transform.DOLocalMove(new Vector3(0,0,0),_robotSweepPower);
         }
         
         Obstacle obstacle = other.GetComponentInParent<Obstacle>();
         if (obstacle)
         {
             Taptic.Heavy();
-            _robotDeathParticle.SetActive(true);
+            _robotExplosionParticle.SetActive(true);
             GameManager.Instance.LoseGame();
             SoundManager.Instance.PlaySound(SoundManager.Instance.loseGameSound, 0.4f);
             UIManager.Instance.dontTouchHousewaresText.enabled = true;

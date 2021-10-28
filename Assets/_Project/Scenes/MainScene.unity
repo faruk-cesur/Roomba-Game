@@ -915,10 +915,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1f34bdffa6d4f2498196a9f2e4c763e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _wayPoints: []
-  _robotDeathParticle: {fileID: 1822017582}
+  _robotExplosionParticle: {fileID: 1822017582}
   _timeForNextRay: 0.01
-  _robotSpeed: 0
+  _robotMoveSpeed: 1
+  _robotSweepPower: 1
 --- !u!120 &21819448
 LineRenderer:
   m_ObjectHideFlags: 0
