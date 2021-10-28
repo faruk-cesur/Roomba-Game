@@ -29,9 +29,10 @@ public class SettingsManager : MonoBehaviour
     private void Start()
     {
         FirstStart();
-        Audio();
         sliderVibration.value = PlayerPrefs.GetFloat("Vibration");
         sliderAudio.value = PlayerPrefs.GetFloat("Audio");
+        Audio();
+        Vibration();
     }
 
     public void OpenSettingsPanel()

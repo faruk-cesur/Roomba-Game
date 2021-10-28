@@ -135,7 +135,7 @@ public class PlayerController : MonoBehaviour
             UIManager.Instance.distanceSlider.value++;
             //Instantiate(particleCollectable, playerModel.transform.position + new Vector3(0, 2, 0), Quaternion.identity);
             SoundManager.Instance.PlaySound(SoundManager.Instance.collectGarbageSound, 0.4f);
-            Destroy(other.gameObject);
+            other.gameObject.SetActive(false);
         }
         
         Obstacle obstacle = other.GetComponentInParent<Obstacle>();
