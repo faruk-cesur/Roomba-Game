@@ -39,6 +39,7 @@ public class PlayerController : MonoBehaviour
         switch (GameManager.Instance.CurrentGameState)
         {
             case GameState.PrepareGame:
+                Movement();
                 break;
             case GameState.MainGame:
                 Movement();
@@ -103,6 +104,7 @@ public class PlayerController : MonoBehaviour
             if (_currentWayPoint == _wayPoints.Count)
             {
                 _isRobotMove = false;
+                GameManager.Instance.CurrentGameState = GameState.WinGame;
 
                 foreach (var wayPoint in _wayPoints)
                 {
