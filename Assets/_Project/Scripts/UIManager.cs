@@ -36,6 +36,7 @@ public class UIManager : MonoBehaviour
         _extraGoldPanel;
 
     [SerializeField] private List<GameObject> _goldenCoins;
+    [SerializeField] private List<GameObject> _yellowStars;
 
     private float _anglerBonusArrowZ, _time = 1f;
 
@@ -66,6 +67,7 @@ public class UIManager : MonoBehaviour
                 UpdateGoldInfo();
                 break;
             case GameState.MainGame:
+                CalculateStars();
                 UpdateGoldInfo();
                 break;
             case GameState.LoseGame:
@@ -78,6 +80,10 @@ public class UIManager : MonoBehaviour
 
     public void PrepareGameUI()
     {
+        foreach (var yellowStar in _yellowStars)
+        {
+            yellowStar.SetActive(false);
+        }
         _prepareGameUI.SetActive(true);
         _mainGameUI.SetActive(false);
         _loseGameUI.SetActive(false);
@@ -119,6 +125,24 @@ public class UIManager : MonoBehaviour
     }
 
 
+    public void CalculateStars()
+    {
+        if (distanceSlider.value > 60)
+        {
+            _yellowStars[0].SetActive(true);
+        }
+
+        if (distanceSlider.value > 133)
+        {
+            _yellowStars[1].SetActive(true);
+        }
+
+        if (distanceSlider.value > 205)
+        {
+            _yellowStars[2].SetActive(true);
+        }
+    }
+    
     public IEnumerator DurationWinGameUI()
     {
         yield return new WaitForSeconds(2f);

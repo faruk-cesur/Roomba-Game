@@ -74,7 +74,7 @@ public class PlayerController : MonoBehaviour
 
             if (Physics.Raycast(_cam.transform.position, direction, out hit, 100f))
             {
-                Debug.DrawLine(_cam.transform.position, direction, Color.red, 1f);
+                Debug.DrawLine(_cam.transform.position, direction, Color.white, 1f);
                 GameObject newWayPoint = new GameObject("WayPoint");
                 newWayPoint.transform.position = new Vector3(hit.point.x, transform.position.y, hit.point.z);
                 _wayPoints.Add(newWayPoint);
@@ -124,6 +124,7 @@ public class PlayerController : MonoBehaviour
         if (garbage)
         {
             UIManager.Instance.gold++;
+            UIManager.Instance.distanceSlider.value++;
             //Instantiate(particleCollectable, playerModel.transform.position + new Vector3(0, 2, 0), Quaternion.identity);
             SoundManager.Instance.PlaySound(SoundManager.Instance.collectGarbageSound, 0.4f);
             Destroy(other.gameObject);
