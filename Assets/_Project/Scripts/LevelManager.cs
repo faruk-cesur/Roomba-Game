@@ -49,7 +49,7 @@ public class LevelManager : MonoBehaviour
     {
         if (currentLevel > levels.Count)
         {
-            currentLevel = 2;
+            currentLevel = 1;
             PlayerPrefs.SetInt("CurrentLevel", currentLevel);
             levels[PlayerPrefs.GetInt("CurrentLevel") - 1].SetActive(true);
         }
